@@ -94,6 +94,7 @@ jobs:
           echo "Building $(git rev-parse --short HEAD)"
 
           
+
       - name: Download Git LFS files
         shell: bash
         run: |
@@ -101,17 +102,21 @@ jobs:
 
           git lfs install
           git lfs pull
+          git lfs checkout
 
-          echo "Checking for unresolved Git LFS pointer files..."
+          echo "Checking downloaded Git LFS files..."
 
-          if git grep -I -l \
-            -e '^version https://git-lfs.github.com/spec/v1$' \
-            HEAD -- 2>/dev/null; then
-            echo "::error::Git LFS pointer files remain in the checkout."
-            exit 1
-          fi
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
 
-          echo "Git LFS download and pointer check completed."
+            if head -n 1 "$file" | grep -q '^version https://git-lfs.github.com/spec/v1$'; then
+              echo "::error::Git LFS pointer remains in working tree: $file"
+              exit 1
+            fi
+          done < <(git lfs ls-files -n)
+
+          echo "Git LFS working-tree check passed."
+
 
 
       # Dispatch inputs arrive with their declared defaults; a tag push has none,
