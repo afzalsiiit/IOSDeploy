@@ -39,6 +39,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  cupertino_icons: ^1.0.8
+  image: ^4.0.19
+  path_provider: ^2.0.16
+  flutter_onnxruntime: ^1.5.1
+  image_picker: ^0.8.8+1
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -58,9 +64,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/tokenizer.json
+    - assets/models/clip_vit32.onnx
+    - assets/models/clip_vit32.onnx.data
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
